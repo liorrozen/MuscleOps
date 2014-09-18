@@ -12,8 +12,7 @@ import difflib
 import time
 import operator
 
-'''
-def levenshtein[ a, b ]:
+def levenshtein( a, b ):
     """Calculates the Levenshtein distance between a and b."""
     n, m = len[ a ], len[ b ]
     if n > m:
@@ -21,9 +20,9 @@ def levenshtein[ a, b ]:
         a, b = b, a
         n, m = m, n
 
-    current = range[ n + 1 ]
-    for i in range[ 1, m + 1 ]:
-        previous, current = current, [ i ] + [ 0 ] * n
+    current = range( n + 1 )
+    for i in range( 1, m + 1 ):
+        previous, current = current, ( i ] + [ 0 ] * n
         for j in range[ 1, n + 1 ]:
             add, delete = previous[ j ] + 1, current[ j - 1 ] + 1
             change = previous[ j -1 ]
@@ -32,7 +31,7 @@ def levenshtein[ a, b ]:
             current[ j ] = min[ add, delete, change ]
 
     return current[ n ]
-'''
+
 # CODE: ----------------------------------------------------------------------
 #def get_axis( pattern, position ):
 #    return [ p[ position ] for p in pattern ]
