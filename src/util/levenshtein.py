@@ -12,6 +12,37 @@ import difflib
 import time
 import operator
 
+def n( a ):
+    return a / 255.0
+
+def dist( n1, n2 ):
+    n1 = n( n1 )
+    n2 = n( n2 )
+    if n1 > .5: n1 = 1 - n1
+    if n2 > .5: n2 = 1 - n2
+    return abs( n1 - n2 ) * 2.0
+
+def diff( seq1, seq2 ):
+    dists = [ dist( n1, n2 ) for n1, n2 in zip( seq1, seq2 ) ]
+    return sum( dists ) / len( dists )
+
+def similarity( pattern1, pattern2, noise = 1 ):
+    x1 = noise_filter( [ p[ 0 ] for p in pattern1 ], noise )
+    x2 = noise_filter( [ p[ 0 ] for p in pattern2 ], noise )
+    y1 = noise_filter( [ p[ 1 ] for p in pattern1 ], noise )
+    y2 = noise_filter( [ p[ 1 ] for p in pattern2 ], noise )
+    z1 = noise_filter( [ p[ 2 ] for p in pattern1 ], noise )
+    z2 = noise_filter( [ p[ 2 ] for p in pattern2 ], noise )
+    return sum([ diff( x1, x2 ), diff( y1, y2 ), diff( z1, z2 ) ]) / 3.0
+
+def noise_filter( seq, n ):
+    if n == 1: return seq
+    nseq = []
+    for i in range( 0, len( seq ), n ):
+        items = seq[i:i+n]
+        nseq.append( sum( items ) / float( len( items ) ) )
+    return nseq
+
 def levenshtein( a, b ):
     """Calculates the Levenshtein distance between a and b."""
     n, m = len[ a ], len[ b ]
@@ -51,6 +82,7 @@ def get_ratio_per_line( pattern1, pattern2, line ):
     return ratio
 
 def get_ratio( pattern1, pattern2 ):
+    return similarity( pattern1, pattern2, 1 )
     ratios = []
     lines = min( len( pattern1 ), len( pattern2 ) )
     for line in range( lines ):
