@@ -79,24 +79,23 @@ def string_to_pattern( string ):
 def find_pattern( pattern ):
     up = create_pattern_up()
     down = create_pattern_down()
-
-    #right = create_pattern_right()
-    #left = create_pattern_left()
+    right = create_pattern_right()
+    left = create_pattern_left()
     #forward = create_pattern_forward()
     #backward = create_pattern_backward()
 
     up_ratio = get_ratio( up, pattern )
     down_ratio = get_ratio( down, pattern )
-    #right_ratio = get_ratio( down, pattern )
-    #left_ratio = get_ratio( down, pattern )
+    right_ratio = get_ratio( right, pattern )
+    left_ratio = get_ratio( left, pattern )
     #forward_ratio = get_ratio( down, pattern )
     #backward_ratio = get_ratio( down, pattern )
 
     ratios = {
         "up:": up_ratio,
         "down:": down_ratio,
-        #"right ratio:": right_ratio,
-        #"left ratio:": left_ratio,
+        "right:": right_ratio,
+        "left:": left_ratio,
         #"forward ratio:": forward_ratio,
         #"backward ratio:": backward_ratio
     }
@@ -140,6 +139,38 @@ def create_pattern_down():
 
     return string_to_pattern( pattern )
 
+def create_pattern_right():
+    pattern = """
+    014 011 233
+    037 007 187
+    041 029 227
+    050 016 245
+    053 019 239
+    031 024 201
+    036 030 200
+    022 031 195
+    026 019 189
+    038 000 172
+    """
+
+    return string_to_pattern( pattern )
+
+def create_pattern_left():
+    pattern = """
+    024 032 207
+    023 051 210
+    017 068 251
+    016 043 213
+    024 035 209
+    012 003 203
+    045 013 192
+    027 020 195
+    063 031 219
+    044 032 219
+    """
+
+    return string_to_pattern( pattern )
+
 def create_pattern_forward():
     pattern = []
     for i in range[ 0, RANGE ]:
@@ -154,19 +185,6 @@ def create_pattern_backward():
 
     return pattern
 
-def create_pattern_right():
-    pattern = []
-    for i in range[ 0, RANGE ]:
-        pattern.append[ [ +i, 0, 0 ] ]
-
-    return pattern
-
-def create_pattern_left():
-    pattern = []
-    for i in range[ 0, RANGE ]:
-        pattern.append[ [ +i, 0, 0 ] ]
-
-    return pattern
 
 # TESTS: ---------------------------------------------------------------------
 RANGE = 255
@@ -203,18 +221,36 @@ def test_get_pattern_down():
     return find_pattern( string_to_pattern( pattern ) )
 
 def test_get_pattern_right():
-    pattern = []
-    for i in range[ 0, RANGE ]:
-        pattern.append[ [ 0, +i * 0.25, 0 ] ]
+    pattern = """
+    048 034 225
+    063 035 220
+    048 030 242
+    047 029 217
+    054 007 219
+    023 017 203
+    019 025 179
+    043 030 204
+    024 024 197
+    030 053 213
+    """
 
-    return find_pattern[ pattern ]
+    return find_pattern( string_to_pattern( pattern ) )
 
 def test_get_pattern_left():
-    pattern = []
-    for i in range[ 0, RANGE ]:
-        pattern.append[ [ 0, -i * 0.25, 0 ] ]
+    pattern = """
+    039 053 219
+    026 064 233
+    015 040 221
+    039 036 197
+    041 025 202
+    033 034 195
+    055 039 193
+    041 027 230
+    049 040 211
+    047 042 238
+    """
 
-    return find_pattern[ pattern ]
+    return find_pattern( string_to_pattern( pattern ) )
 
 def test_get_pattern_forward():
     pattern = []
@@ -238,14 +274,13 @@ if __name__=="__main__":
     print "Test down pattern:"
     print test_get_pattern_down()
     print "---------------------"
-
-    '''
     print "Test right pattern:"
     print test_get_pattern_right()
     print "---------------------"
     print "Test left pattern:"
     print test_get_pattern_left()
     print "---------------------"
+    '''
     print "Test forward pattern:"
     print test_get_pattern_forward()
     print "---------------------"
