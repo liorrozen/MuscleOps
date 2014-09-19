@@ -8,6 +8,8 @@ from boto_api import *
 
 
 class TCPSocketServer( SocketServer.BaseRequestHandler ):
+
+    ec2 = Ec2Api()
    
     def handle( self ):
         # self.request is the TCP socket connected to the client
@@ -18,12 +20,19 @@ class TCPSocketServer( SocketServer.BaseRequestHandler ):
 
 	direction = MuscleOps().gesture( pattern )
 
-	{
-		"up": Ec2Api().create_instance ,
-		"down": Ec2Api().stop_instance ,
-		"left": SqsApi().create_queue().write_message ,
-		"right": S3Api().upload_string 
-	}[ direction ]()
+	if direction == "up":
+		self.ec2.create_instance()
+
+	if direction == "down":
+		self.ec2.stop_instances( ["i-7abb6094"] )
+
+
+	#{
+	#	"up": Ec2Api().create_instance ,
+	#	"down": Ec2Api().stop_instance ,
+	#	"left": SqsApi().create_queue().write_message ,
+	#	"right": S3Api().upload_string 
+	#}[ direction ]()
 
 	print direction
 
