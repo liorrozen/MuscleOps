@@ -259,7 +259,7 @@ class MuscleOps( object ):
 
 
 # # Main: ----------------------------------------------------------------------
-if __name__=="__main__":
+if __name__== "__main__":
     lev = MuscleOps()
     print "Test up pattern:"
     print lev.test_get_pattern_up()
