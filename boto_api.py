@@ -1,7 +1,8 @@
 import boto
 import boto.ec2
 from boto.ec2.connection import EC2Connection
-from boto.sqs.message import Message
+from boto.sqs.connection import SQSConnection
+from boto.sqs.message import RawMessage
 from boto.s3.connection import S3Connection
 from boto.s3.key import Key
 
@@ -38,8 +39,7 @@ class Ec2Api( object ):
 class SqsApi( object ):
 
     def __init__( self ):
-        self.conn = boto.sqs.connect_to_region(
-            "us-west-2",
+        self.conn = SQSConnection(
             aws_access_key_id = AWS_ACCESS_KEY,
             aws_secret_access_key = AWS_SECRET_KEY
         )
@@ -51,7 +51,7 @@ class SqsApi( object ):
         return self.conn.get_all_queues()
 
     def write_message( self, q, msg = "If you're sleepy and you know it; clap your hands!" ):
-        m = Message()
+        m = RawMessage()
         m.set_body( msg )
         q.write( m )
 
@@ -76,11 +76,13 @@ def test_ec2_create( ec2 ):
 def test_ec2_stop( ec2 ):
     ec2.stop_instances( [ "i-88895266" ] )
 
-def test_sqs_create():
+def test_sqs_run():
     sqs = SqsApi()
-    sqs.create_queue()
+    sqs.write_message( sqs.create_queue() )
 
 if __name__ == "__main__":
-    ec2 = Ec2Api()
+    #ec2 = Ec2Api()
     #test_ec2_create( ec2 )
     test_ec2_stop( ec2 )
+    test_sqs_run()
+
