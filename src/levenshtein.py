@@ -18,30 +18,30 @@ class MuscleOps( object ):
     def gesture( self, pattern ):
         return find_pattern( string_to_pattern( pattern ) )
 
-    def n( a ):
+    def n( self, a ):
         return a / 255.0
 
-    def dist( n1, n2 ):
-        n1 = n( n1 )
-        n2 = n( n2 )
+    def dist( self, n1, n2 ):
+        n1 = self.n( n1 )
+        n2 = self.n( n2 )
         if n1 > .5: n1 = 1 - n1
         if n2 > .5: n2 = 1 - n2
         return abs( n1 - n2 ) * 2.0
 
-    def diff( seq1, seq2 ):
+    def diff( self, seq1, seq2 ):
         dists = [ dist( n1, n2 ) for n1, n2 in zip( seq1, seq2 ) ]
         return sum( dists ) / len( dists )
 
-    def similarity( pattern1, pattern2, noise = 1 ):
+    def similarity( self, pattern1, pattern2, noise = 1 ):
         x1 = noise_filter( [ p[ 0 ] for p in pattern1 ], noise )
         x2 = noise_filter( [ p[ 0 ] for p in pattern2 ], noise )
         y1 = noise_filter( [ p[ 1 ] for p in pattern1 ], noise )
         y2 = noise_filter( [ p[ 1 ] for p in pattern2 ], noise )
         z1 = noise_filter( [ p[ 2 ] for p in pattern1 ], noise )
         z2 = noise_filter( [ p[ 2 ] for p in pattern2 ], noise )
-        return sum([ diff( x1, x2 ), diff( y1, y2 ), diff( z1, z2 ) ]) / 3.0
+        return sum([ self.diff( x1, x2 ), self.diff( y1, y2 ), self.diff( z1, z2 ) ]) / 3.0
 
-    def noise_filter( seq, n ):
+    def noise_filter( self, seq, n ):
         if n == 1: return seq
         nseq = []
         for i in range( 0, len( seq ), n ):
@@ -49,7 +49,7 @@ class MuscleOps( object ):
             nseq.append( sum( items ) / float( len( items ) ) )
         return nseq
 
-    def levenshtein( a, b ):
+    def levenshtein( self, a, b ):
         """Calculates the Levenshtein distance between a and b."""
         n, m = len[ a ], len[ b ]
         if n > m:
@@ -69,29 +69,29 @@ class MuscleOps( object ):
 
         return current[ n ]
 
-    def get_ratio_per_line( pattern1, pattern2, line ):
+    def get_ratio_per_line( self, pattern1, pattern2, line ):
         p1 = pattern1[ line ]
         p2 = pattern2[ line ]
         ratio = difflib.SequenceMatcher( None, p1, p2 ).ratio()
         print "line %s ratio: %s" % ( line, ratio )
         return ratio
 
-    def get_ratio( pattern1, pattern2 ):
-        return 1 - similarity( pattern1, pattern2, 1 )
+    def get_ratio( self, pattern1, pattern2 ):
+        return 1 - self.similarity( pattern1, pattern2, 1 )
         ratios = []
         lines = min( len( pattern1 ), len( pattern2 ) )
         for line in range( lines ):
-            ratios.append( get_ratio_per_line( pattern1, pattern2, line ) )
+            ratios.append( self.get_ratio_per_line( pattern1, pattern2, line ) )
 
         ratio = sum( ratios ) / float( len( ratios ) )
         print "avg ratio:", ratio
         return ratio
 
-    def get_max_ratio( ratios ):
+    def get_max_ratio( self, ratios ):
         print ratios
         return max( ratios.iteritems(), key = operator.itemgetter( 1 ) )[ 0 ]
 
-    def string_to_pattern( string ):
+    def string_to_pattern( self, string ):
         pattern1 = []
         for st in string.strip().split( "\n" ):
             pattern1.append( st.strip().split( " " ) )
@@ -102,7 +102,7 @@ class MuscleOps( object ):
 
         return pattern
 
-    def find_pattern( pattern ):
+    def find_pattern( self, pattern ):
         up = create_pattern_up()
         down = create_pattern_down()
         right = create_pattern_right()
@@ -126,14 +126,14 @@ class MuscleOps( object ):
             #"backward ratio:": backward_ratio
         }
 
-        result = get_max_ratio( ratios )
+        result = self.get_max_ratio( ratios )
 
         result = "'" + result + "' pattern Wins"
 
         return result
 
     # CONTROL PATTERNS: ------------------------------------------------------------------
-    def create_pattern_up():
+    def create_pattern_up( self ):
         pattern = """
         058 015 010
         071 007 014
@@ -147,9 +147,9 @@ class MuscleOps( object ):
         050 011 006
         """
 
-        return string_to_pattern( pattern )
+        return self.string_to_pattern( pattern )
 
-    def create_pattern_down():
+    def create_pattern_down( self ):
         pattern = """
         231 225 217
         241 241 206
@@ -163,9 +163,9 @@ class MuscleOps( object ):
         061 051 003
         """
 
-        return string_to_pattern( pattern )
+        return self.string_to_pattern( pattern )
 
-    def create_pattern_right():
+    def create_pattern_right( self ):
         pattern = """
         060 002 004
         067 253 005
@@ -179,9 +179,9 @@ class MuscleOps( object ):
         043 222 010
         """
 
-        return string_to_pattern( pattern )
+        return self.string_to_pattern( pattern )
 
-    def create_pattern_left():
+    def create_pattern_left( self ):
         pattern = """
         060 008 012
         064 008 013
@@ -195,26 +195,27 @@ class MuscleOps( object ):
         043 045 005
         """
 
-        return string_to_pattern( pattern )
+        return self.string_to_pattern( pattern )
 
-    def create_pattern_forward():
+    '''
+    def create_pattern_forward( self ):
         pattern = []
         for i in range[ 0, RANGE ]:
             pattern.append[ [ 0, +i, 0 ] ]
 
         return pattern
 
-    def create_pattern_backward():
+    def create_pattern_backward( self ):
         pattern = []
         for i in range[ 0, RANGE ]:
             pattern.append[ [ 0, -i, 0 ] ]
 
         return pattern
-
+    '''
 
     # TESTS: ---------------------------------------------------------------------
     RANGE = 255
-    def test_get_pattern_up():
+    def test_get_pattern_up( self ):
         pattern = """
         055 013 014
         060 013 014
@@ -230,7 +231,7 @@ class MuscleOps( object ):
 
         return find_pattern( string_to_pattern( pattern ) )
 
-    def test_get_pattern_down():
+    def test_get_pattern_down( self ):
         pattern = """
         234 234 206
         252 230 216
@@ -246,7 +247,7 @@ class MuscleOps( object ):
 
         return find_pattern( string_to_pattern( pattern ) )
 
-    def test_get_pattern_right():
+    def test_get_pattern_right( self ):
         pattern = """
         062 000 008
         059 255 007
@@ -262,7 +263,7 @@ class MuscleOps( object ):
 
         return find_pattern( string_to_pattern( pattern ) )
 
-    def test_get_pattern_left():
+    def test_get_pattern_left( self ):
         pattern = """
         058 011 010
         064 005 008
@@ -279,14 +280,14 @@ class MuscleOps( object ):
         return find_pattern( string_to_pattern( pattern ) )
 
     '''
-    def test_get_pattern_forward():
+    def test_get_pattern_forward( self ):
         pattern = []
         for i in range[ 0, RANGE ]:
             pattern.append[ [ +i * 0.25, 0, 0 ] ]
 
         return find_pattern[ pattern ]
 
-    def test_get_pattern_backward():
+    def test_get_pattern_backward( self ):
         pattern = []
         for i in range[ 0, RANGE ]:
             pattern.append[ [ -i * 0.25, 0, 0 ] ]
