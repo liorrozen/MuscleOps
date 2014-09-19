@@ -9,14 +9,13 @@
 # information, see <http://creativecommons.org/publicdomain/zero/1.0>
 
 import difflib
-import time
 import operator
 
 # CODE: ----------------------------------------------------------------------
 class MuscleOps( object ):
 
     def gesture( self, pattern ):
-        return find_pattern( string_to_pattern( pattern ) )
+        return self.find_pattern( self.string_to_pattern( pattern ) )
 
     def n( self, a ):
         return a / 255.0
@@ -29,16 +28,16 @@ class MuscleOps( object ):
         return abs( n1 - n2 ) * 2.0
 
     def diff( self, seq1, seq2 ):
-        dists = [ dist( n1, n2 ) for n1, n2 in zip( seq1, seq2 ) ]
+        dists = [ self.dist( n1, n2 ) for n1, n2 in zip( seq1, seq2 ) ]
         return sum( dists ) / len( dists )
 
     def similarity( self, pattern1, pattern2, noise = 1 ):
-        x1 = noise_filter( [ p[ 0 ] for p in pattern1 ], noise )
-        x2 = noise_filter( [ p[ 0 ] for p in pattern2 ], noise )
-        y1 = noise_filter( [ p[ 1 ] for p in pattern1 ], noise )
-        y2 = noise_filter( [ p[ 1 ] for p in pattern2 ], noise )
-        z1 = noise_filter( [ p[ 2 ] for p in pattern1 ], noise )
-        z2 = noise_filter( [ p[ 2 ] for p in pattern2 ], noise )
+        x1 = self.noise_filter( [ p[ 0 ] for p in pattern1 ], noise )
+        x2 = self.noise_filter( [ p[ 0 ] for p in pattern2 ], noise )
+        y1 = self.noise_filter( [ p[ 1 ] for p in pattern1 ], noise )
+        y2 = self.noise_filter( [ p[ 1 ] for p in pattern2 ], noise )
+        z1 = self.noise_filter( [ p[ 2 ] for p in pattern1 ], noise )
+        z2 = self.noise_filter( [ p[ 2 ] for p in pattern2 ], noise )
         return sum([ self.diff( x1, x2 ), self.diff( y1, y2 ), self.diff( z1, z2 ) ]) / 3.0
 
     def noise_filter( self, seq, n ):
@@ -103,27 +102,21 @@ class MuscleOps( object ):
         return pattern
 
     def find_pattern( self, pattern ):
-        up = create_pattern_up()
-        down = create_pattern_down()
-        right = create_pattern_right()
-        left = create_pattern_left()
-        #forward = create_pattern_forward()
-        #backward = create_pattern_backward()
+        up = self.create_pattern_up()
+        down = self.create_pattern_down()
+        right = self.create_pattern_right()
+        left = self.create_pattern_left()
 
-        up_ratio = get_ratio( up, pattern )
-        down_ratio = get_ratio( down, pattern )
-        right_ratio = get_ratio( right, pattern )
-        left_ratio = get_ratio( left, pattern )
-        #forward_ratio = get_ratio( down, pattern )
-        #backward_ratio = get_ratio( down, pattern )
+        up_ratio = self.get_ratio( up, pattern )
+        down_ratio = self.get_ratio( down, pattern )
+        right_ratio = self.get_ratio( right, pattern )
+        left_ratio = self.get_ratio( left, pattern )
 
         ratios = {
             "up:": up_ratio,
             "down:": down_ratio,
             "right:": right_ratio,
-            "left:": left_ratio,
-            #"forward ratio:": forward_ratio,
-            #"backward ratio:": backward_ratio
+            "left:": left_ratio
         }
 
         result = self.get_max_ratio( ratios )
@@ -197,22 +190,6 @@ class MuscleOps( object ):
 
         return self.string_to_pattern( pattern )
 
-    '''
-    def create_pattern_forward( self ):
-        pattern = []
-        for i in range[ 0, RANGE ]:
-            pattern.append[ [ 0, +i, 0 ] ]
-
-        return pattern
-
-    def create_pattern_backward( self ):
-        pattern = []
-        for i in range[ 0, RANGE ]:
-            pattern.append[ [ 0, -i, 0 ] ]
-
-        return pattern
-    '''
-
     # TESTS: ---------------------------------------------------------------------
     RANGE = 255
     def test_get_pattern_up( self ):
@@ -229,7 +206,7 @@ class MuscleOps( object ):
         060 027 008
         """
 
-        return find_pattern( string_to_pattern( pattern ) )
+        return self.find_pattern( self.string_to_pattern( pattern ) )
 
     def test_get_pattern_down( self ):
         pattern = """
@@ -245,7 +222,7 @@ class MuscleOps( object ):
         060 040 193
         """
 
-        return find_pattern( string_to_pattern( pattern ) )
+        return self.find_pattern( self.string_to_pattern( pattern ) )
 
     def test_get_pattern_right( self ):
         pattern = """
@@ -261,7 +238,7 @@ class MuscleOps( object ):
         047 219 009
         """
 
-        return find_pattern( string_to_pattern( pattern ) )
+        return self.find_pattern( self.string_to_pattern( pattern ) )
 
     def test_get_pattern_left( self ):
         pattern = """
@@ -277,43 +254,20 @@ class MuscleOps( object ):
         041 044 010
         """
 
-        return find_pattern( string_to_pattern( pattern ) )
+        return self.find_pattern( self.string_to_pattern( pattern ) )
 
-    '''
-    def test_get_pattern_forward( self ):
-        pattern = []
-        for i in range[ 0, RANGE ]:
-            pattern.append[ [ +i * 0.25, 0, 0 ] ]
 
-        return find_pattern[ pattern ]
-
-    def test_get_pattern_backward( self ):
-        pattern = []
-        for i in range[ 0, RANGE ]:
-            pattern.append[ [ -i * 0.25, 0, 0 ] ]
-
-        return find_pattern( pattern )
-    '''
-
-# Main: ----------------------------------------------------------------------
-if __name__=="__main__":
-    print "Test up pattern:"
-    print test_get_pattern_up()
-    print "---------------------"
-    print "Test down pattern:"
-    print test_get_pattern_down()
-    print "---------------------"
-    print "Test right pattern:"
-    print test_get_pattern_right()
-    print "---------------------"
-    print "Test left pattern:"
-    print test_get_pattern_left()
-    print "---------------------"
-    '''
-    print "Test forward pattern:"
-    print test_get_pattern_forward()
-    print "---------------------"
-    print "Test backward pattern:"
-    print test_get_pattern_backward()
-    print "---------------------"
-    '''
+# # Main: ----------------------------------------------------------------------
+# if __name__=="__main__":
+#     print "Test up pattern:"
+#     print self.test_get_pattern_up()
+#     print "---------------------"
+#     print "Test down pattern:"
+#     print self.test_get_pattern_down()
+#     print "---------------------"
+#     print "Test right pattern:"
+#     print self.test_get_pattern_right()
+#     print "---------------------"
+#     print "Test left pattern:"
+#     print self.test_get_pattern_left()
+#     print "---------------------"
