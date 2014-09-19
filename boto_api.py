@@ -40,7 +40,7 @@ class SqsApi( object ):
             aws_secret_access_key = AWS_SECRET_KEY
         )
 
-    def create_queue( self, name ):
+    def create_queue( self, name = "AWSHackathon" ):
         return self.conn.create_queue( name )
 
     def list_queues( self ):

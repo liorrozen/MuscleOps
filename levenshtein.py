@@ -72,7 +72,7 @@ class MuscleOps( object ):
         p1 = pattern1[ line ]
         p2 = pattern2[ line ]
         ratio = difflib.SequenceMatcher( None, p1, p2 ).ratio()
-        print "line %s ratio: %s" % ( line, ratio )
+        #print "line %s ratio: %s" % ( line, ratio )
         return ratio
 
     def get_ratio( self, pattern1, pattern2 ):
@@ -83,11 +83,11 @@ class MuscleOps( object ):
             ratios.append( self.get_ratio_per_line( pattern1, pattern2, line ) )
 
         ratio = sum( ratios ) / float( len( ratios ) )
-        print "avg ratio:", ratio
+        #print "avg ratio:", ratio
         return ratio
 
     def get_max_ratio( self, ratios ):
-        print ratios
+        #print ratios
         return max( ratios.iteritems(), key = operator.itemgetter( 1 ) )[ 0 ]
 
     def string_to_pattern( self, string ):
@@ -116,15 +116,13 @@ class MuscleOps( object ):
         left_ratio = self.get_ratio( left, pattern )
 
         ratios = {
-            "up:": up_ratio,
-            "down:": down_ratio,
-            "right:": right_ratio,
-            "left:": left_ratio
+            "up": up_ratio,
+            "down": down_ratio,
+            "right": right_ratio,
+            "left": left_ratio
         }
 
         result = self.get_max_ratio( ratios )
-
-        result = "'" + result + "' pattern Wins"
 
         return result
 
