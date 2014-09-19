@@ -60,7 +60,7 @@ class S3Api( object ):
     def create_bucket( self, name ):
         return self.conn.create_bucket( name )
 
-    def upload_string( self, bucket, key = "foobar", msg = "This is S3 Test" ):
+    def upload_string( self, bucket, key = "clap", msg = "If you're sleepy and you know it; clap your hands!" ):
         k = Key( bucket )
         k.key = key
         k.set_contents_from_string( msg )
