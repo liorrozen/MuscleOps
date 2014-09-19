@@ -258,16 +258,17 @@ class MuscleOps( object ):
 
 
 # # Main: ----------------------------------------------------------------------
-# if __name__=="__main__":
-#     print "Test up pattern:"
-#     print self.test_get_pattern_up()
-#     print "---------------------"
-#     print "Test down pattern:"
-#     print self.test_get_pattern_down()
-#     print "---------------------"
-#     print "Test right pattern:"
-#     print self.test_get_pattern_right()
-#     print "---------------------"
-#     print "Test left pattern:"
-#     print self.test_get_pattern_left()
-#     print "---------------------"
+if __name__=="__main__":
+    lev = MuscleOps()
+    print "Test up pattern:"
+    print lev.test_get_pattern_up()
+    print "---------------------"
+    print "Test down pattern:"
+    print lev.test_get_pattern_down()
+    print "---------------------"
+    print "Test right pattern:"
+    print lev.test_get_pattern_right()
+    print "---------------------"
+    print "Test left pattern:"
+    print lev.test_get_pattern_left()
+    print "---------------------"
