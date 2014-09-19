@@ -26,13 +26,13 @@ class TCPSocketServer( SocketServer.BaseRequestHandler ):
 	if direction == "down":
 		self.ec2.stop_instances( ["i-7abb6094"] )
 
+	if direction == "left":
+	        sqs = SqsApi()
+	        sqs.write_message( sqs.create_queue() )
 
-	#{
-	#	"up": Ec2Api().create_instance ,
-	#	"down": Ec2Api().stop_instance ,
-	#	"left": SqsApi().create_queue().write_message ,
-	#	"right": S3Api().upload_string 
-	#}[ direction ]()
+	if direction == "right":
+	        s3 = S3Api()
+	        s3.upload_string( s3.create_bucket() )
 
 	print direction
 
