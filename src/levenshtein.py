@@ -278,6 +278,7 @@ class MuscleOps( object ):
 
         return find_pattern( string_to_pattern( pattern ) )
 
+    '''
     def test_get_pattern_forward():
         pattern = []
         for i in range[ 0, RANGE ]:
@@ -291,6 +292,7 @@ class MuscleOps( object ):
             pattern.append[ [ -i * 0.25, 0, 0 ] ]
 
         return find_pattern( pattern )
+    '''
 
 # Main: ----------------------------------------------------------------------
 if __name__=="__main__":
