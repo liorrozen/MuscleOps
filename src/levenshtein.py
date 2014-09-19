@@ -15,7 +15,7 @@ import operator
 class MuscleOps( object ):
 
     def gesture( self, pattern ):
-        return self.find_pattern( self.string_to_pattern( pattern ) )
+        return self.find_pattern( self.string_to_int( pattern ) )
 
     def n( self, a ):
         return a / 255.0
@@ -95,6 +95,9 @@ class MuscleOps( object ):
         for st in string.strip().split( "\n" ):
             pattern1.append( st.strip().split( " " ) )
 
+        return self.string_to_int( pattern1 )
+
+    def string_to_int( self, pattern1 ):
         pattern = []
         for p in pattern1:
             pattern.append( [ int( i ) for i in p ] )
