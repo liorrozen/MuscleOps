@@ -53,7 +53,7 @@ def levenshtein( a, b ):
 
     current = range( n + 1 )
     for i in range( 1, m + 1 ):
-        previous, current = current, ( i ] + [ 0 ] * n
+        previous, current = current, [ i ] + [ 0 ] * n
         for j in range[ 1, n + 1 ]:
             add, delete = previous[ j ] + 1, current[ j - 1 ] + 1
             change = previous[ j -1 ]
@@ -82,7 +82,7 @@ def get_ratio_per_line( pattern1, pattern2, line ):
     return ratio
 
 def get_ratio( pattern1, pattern2 ):
-    return similarity( pattern1, pattern2, 1 )
+    return 1 - similarity( pattern1, pattern2, 1 )
     ratios = []
     lines = min( len( pattern1 ), len( pattern2 ) )
     for line in range( lines ):
@@ -140,16 +140,16 @@ def find_pattern( pattern ):
 # CONTROL PATTERNS: ------------------------------------------------------------------
 def create_pattern_up():
     pattern = """
-    043 041 029
-    080 064 018
-    088 066 011
-    082 067 004
-    062 049 239
-    042 034 225
-    017 024 208
-    004 016 201
-    003 011 211
-    254 000 211
+    058 015 010
+    071 007 014
+    082 011 020
+    072 011 012
+    072 012 011
+    067 011 010
+    063 015 003
+    056 013 002
+    045 002 009
+    050 011 006
     """
 
     return string_to_pattern( pattern )
@@ -221,16 +221,16 @@ def create_pattern_backward():
 RANGE = 255
 def test_get_pattern_up():
     pattern = """
-    036 061 253
-    050 074 236
-    033 073 229
-    041 075 221
-    051 063 205
-    033 042 192
-    011 018 187
-    241 005 206
-    224 007 200
-    246 244 212
+    055 013 014
+    060 013 014
+    072 019 015
+    072 012 016
+    069 013 012
+    065 022 012
+    063 017 003
+    058 010 251
+    057 023 001
+    060 027 008
     """
 
     return find_pattern( string_to_pattern( pattern ) )
