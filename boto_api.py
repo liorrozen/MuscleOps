@@ -7,8 +7,8 @@ from boto.s3.connection import S3Connection
 from boto.s3.key import Key
 
 # Globals
-AWS_ACCESS_KEY = "AKIAIXTVNQVEOVSK33CQ"
-AWS_SECRET_KEY = "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"
+AWS_ACCESS_KEY = "{{ACCESS_KEY}}"
+AWS_SECRET_KEY = "{{SECRET_KEY}}"
 
 class Ec2Api( object ):
 
