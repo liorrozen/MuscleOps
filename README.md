@@ -12,4 +12,4 @@ The gestures can perform tasks such as:
 - Create an S3 bucket
 - Backup the contents of an SQS queue to the S3 bucket
 
-Live demo - https://www.youtube.com/watch?v=LB5UOkQZCrw
+Hackathon demo - https://www.youtube.com/watch?v=LB5UOkQZCrw
